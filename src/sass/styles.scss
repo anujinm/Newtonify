@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./variables";
+@import url(https://fonts.googleapis.com/css?family=Oswald);
+@import '../../node_modules/font-awesome/scss/font-awesome';
+@import '../../node_modules/bootstrap/scss/bootstrap';
+@import '~katex/dist/katex.css';
+
+body, html {
+  font-family: 'Oswald';
+}
+
+.katex {
+  font-size: 4em !important;
+}

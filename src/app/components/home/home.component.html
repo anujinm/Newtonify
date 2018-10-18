@@ -1,0 +1,169 @@
+
+<div class="container-fluid row">
+  <div class="offset-2 col-2 side">
+    <!--card 1 fun facts-->
+    <div class="card">
+      <div class="card-header facts">
+        Fun Facts about Isaac Newton:
+      </div>
+      <div class="card-block text-center">
+        <p class="card-text">{{fun_fact_body[fun_fact_index]}}</p>
+        <a href="#" class="btn btn-outline-success" (click)="fun_fact_next()">Next</a>
+      </div>
+    </div>
+    <!--card 2 quotes-->
+    <div class="card">
+      <div class="card-header quotes">
+        Quotes by Isaac Newton:
+      </div>
+      <div class="card-block text-center">
+        <p class="card-text">{{quotes_body[quotes_index]}}</p>
+        <a href="#" class="btn btn-outline-success" (click)="quotes_next()">Next</a>
+      </div>
+    </div>
+    <!--meme-->
+    <img src="/assets/images/meme.jpg" alt="meme" width="100%">
+  </div>
+
+  <div class="col-6 main">
+    <div class="title row justify-content-around">
+      <div class="col-12">
+        <img src="/assets/images/newton3.png" alt="newton" width="100%" >
+        <hr>
+      </div>
+    </div>
+    <!--Form-->
+    <label>Enter what you want to calculate:</label>
+    <form novalidate (ngSubmit)="calculate()">
+      <div class="input-group input">
+        <input name="equation" [(ngModel)]="equation" type="text" class="form-control _equation_entry" (ngModelChange)="textChanged($event)"/>
+
+
+        <div class="input-group mb-3 _operation" >
+          <select class="custom-select custom-select-lg" name="calculation_type" (change)="comboBoxChanged($event)" [(ngModel)]="calculation_type">
+            <option value="expand" selected>Expand</option>
+            <option value="diff">Differentiate</option>
+            <option value="integ">Integrate</option>
+            <option value="factor">Factor</option>
+            <option value="simplify">Simplify</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-lg calculate">Calculate!</button>
+
+      </div>
+
+      <!--Integrate-->
+      <div [hidden]="integ_hidden" class="row">
+        <div class="col">
+          <label>Variable of integration:</label>
+        </div>
+        <div class="col" >
+          <select class="custom-select custom-select-sm" name="variable" [(ngModel)]="variable" (change)="comboBoxChanged($event)">
+            <option value="x" selected>x</option>
+            <option value="y">y</option>
+            <option value="z">z</option>
+            <option value="a">a</option>
+            <option value="b">b</option>
+            <option value="c">c</option>
+            <option value="d">d</option>
+            <option value="e">e</option>
+            <option value="f">f</option>
+            <option value="g">g</option>
+            <option value="h">h</option>
+            <option value="i">i</option>
+            <option value="j">j</option>
+            <option value="k">k</option>
+            <option value="l">l</option>
+            <option value="m">m</option>
+            <option value="n">n</option>
+            <option value="o">o</option>
+            <option value="p">p</option>
+            <option value="q">q</option>
+            <option value="r">r</option>
+            <option value="s">s</option>
+            <option value="t">t</option>
+            <option value="u">u</option>
+            <option value="v">v</option>
+            <option value="w">w</option>
+          </select>
+        </div>
+        <div class="col"><label>Lower bound (from):</label></div>
+        <div class="col"><input type="text" name="minn" [(ngModel)]="minn" (change)="comboBoxChanged($event)"></div>
+        <div class="col"><label>Upper bound (to):</label></div>
+        <div class="col"><input type="text" name="maxx" [(ngModel)]="maxx" (change)="comboBoxChanged($event)"></div>
+      </div>
+
+      <!--Differentiate-->
+      <div [hidden]="diff_hidden" class="row">
+        <div class="col">
+          <label>Variable:</label>
+        </div>
+        <div class="col">
+          <select name="variable" [(ngModel)]="variable" (change)="comboBoxChanged($event)" class="custom-select custom-select-sm">
+            <option value="x" selected>x</option>
+            <option value="y">y</option>
+            <option value="z">z</option>
+            <option value="a">a</option>
+            <option value="b">b</option>
+            <option value="c">c</option>
+            <option value="d">d</option>
+            <option value="e">e</option>
+            <option value="f">f</option>
+            <option value="g">g</option>
+            <option value="h">h</option>
+            <option value="i">i</option>
+            <option value="j">j</option>
+            <option value="k">k</option>
+            <option value="l">l</option>
+            <option value="m">m</option>
+            <option value="n">n</option>
+            <option value="o">o</option>
+            <option value="p">p</option>
+            <option value="q">q</option>
+            <option value="r">r</option>
+            <option value="s">s</option>
+            <option value="t">t</option>
+            <option value="u">u</option>
+            <option value="v">v</option>
+            <option value="w">w</option>
+          </select>
+        </div>
+        <div class="col"><label>How many:</label></div>
+        <div class="col"><input value="1" type="number" min="1" name="power" [(ngModel)]="power" (change)="comboBoxChanged($event)"></div>
+      </div>
+    </form>
+    <!--Preview-->
+    <div>
+      <h4>Preview:</h4>
+    </div>
+    <div class="card preview">
+      <!--<ng-katex [equation]="front"></ng-katex>-->
+      <!--<ng-katex [equation]="equation"></ng-katex>-->
+      <!--<ng-katex [equation]="end"></ng-katex>-->
+      <ng-katex [equation]="full_preview"></ng-katex>
+    </div>
+
+    <!--Results-->
+    <div class="results">
+      <h4>Results:</h4>
+      <br>
+      <div *ngIf="spinner_show" class="card text-center">
+        <span><i class="fa fa-spinner fa-spin" [ngStyle]="{'font-size': spinner_size+'em'}" aria-hidden="true"></i></span>
+      </div>
+      <div class="response">
+        <ng-katex [equation]="api_response"></ng-katex>
+      </div>
+    </div>
+    <!--Buttons-->
+    <div class="row text-center">
+      <div class="col">
+        <button type="button" class="btn btn-success btn-lg bottom" ngxClipboard [cbContent]= "api_response">Copy</button>
+        <button type="button" class="btn btn-secondary btn-lg bottom" (click)="ClearAll()">Clear</button>
+      </div>
+    </div>
+
+  </div>
+  <div class="offset-2"></div>
+</div>
+<br>
